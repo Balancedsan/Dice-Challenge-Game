@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+  padding:0;
+  margin:0;
+}
+
+html {
+  background:#FFC371;
+  height:100%;
+}
+body {
+
+  height: 100%;
+}
+/*Header Styles*/
+
+.header {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header__title {
+  text-align: center;
+  margin-top:2rem;
+  color:white;
+  font-size:5rem;
+}
+
+.header__title--instruct {
+  font-size:3.5rem;
+}
+
+.header__button {
+  margin-top:2rem;
+  background:white;
+  border:2px solid black;
+  padding:0.5rem;
+  font-size:3rem;
+  width:300px;
+  border-radius:20px;
+}
+
+.header__after {
+  display:none;
+}
+
+
+.main{
+  display:none;
+}
+
+.main__after {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+  height: 100%;
+}
+
+
+
+/* .button__after {
+  margin-top:2rem;
+  background:white;
+  border:2px solid black;
+  padding:0.5rem;
+  font-size:3rem;
+  border-radius:20px;
+} */
