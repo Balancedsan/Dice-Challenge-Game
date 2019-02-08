@@ -5,21 +5,30 @@
     <title>My Website</title>
     <link rel="stylesheet" href="styles.css">
 
+
+    <!-- Google Fonts -->
+
+    <link href="https://fonts.googleapis.com/css?family=Merriweather|Montserrat" rel="stylesheet">
   </head>
   <body class="body">
 
     <header class="header">
-      <h1 class="header__title">2 Player Dice betting Game</h1>
-      <h2 class="header__title header__title--instruct">Press The Start Button To Begin</h1>
-      <button class="header__button">Start</button>
+      <div class="header__initial">
+          <h1 class="header__title">Two Player Dice Beting Game</h1>
+          <h2 class="header__title header__title--instruct">Press Start To Begin</h1>
+          <button class="header__button">Start</button>
+          <img  class="header__img" src="./images/2dice.png" alt="2 dices">
+      </div>
     </header>
 
 
     <main class="main">
       <h1 class="main__text main__content"></h1>
       <div class="main__diceimg">
+          <h1 class="main__player1 main__content"></h1>
           <img class ="main__image">
           <img class ="main__image">
+          <h1 class="main__player2 main__content"></h1>
       </div>
       <h1 class="main__winner  main__content"></h1>
       <button class="main__button  main__content hide__display"></button>

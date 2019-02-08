@@ -9,6 +9,7 @@ const playerResult = {
 
 document.querySelector(".header__button").addEventListener("click", () => {
     renderHeader();
+    document.querySelector(".header").classList.add("header__after");
     displayResults();
 })
 
@@ -21,10 +22,12 @@ document.querySelector(".main__button").addEventListener("click",()=> {
     displayResults();
 })
 
+// renders the header score
 
 function renderHeader(){
     const currentContent = document.querySelector(".header");
-    const replaceWith =   `<h1>Current Score: <br> Player 1: ${playerResult.player1}  <br> Player 2: ${playerResult.player2}</h1>`;
+    currentContent.style.fontSize = "x-large";
+    const replaceWith =   `<h1>Current   Score: <br> Player 1: ${playerResult.player1}  <br> Player 2: ${playerResult.player2}</h1>`;
     changeElementContent(currentContent ,replaceWith);
 }
 
@@ -39,8 +42,10 @@ function changeElementContent(element, content) {
 // countdown timer used to display before running the content
 
 function countDownTimer(value, element) {
+    element.textContent = " Are You Ready? ";
     const promise = new Promise((resolve, reject) => {
         const timer = setInterval(() => {
+            element.style.fontSize = "xx-large";
             element.textContent = value - 1;
             value -= 1;
             if (value <= 0) {
@@ -64,19 +69,20 @@ function toggleDisplay(element) {
 function displayResults() {
 
     countDownTimer(4, document.querySelector(".main__text"))
-        .then((element) => { element.textContent = "" })
-        .then(()=> generateImages())
-        .then(()=> getDiceResult())
-        .then((array)=> result(array))
-        .then(() =>{
-            document.querySelector(".main__button").textContent = "play again?";
-            document.querySelector(".main__button").classList.remove("hide__display");
-        } )
-
+    .then((element)=> {
+        renderBody(element);
+     })
 }
 
+// renders the body of the game
 
-
+function renderBody(element){
+    element.textContent = "";
+    generateImages()
+    result(getDiceResult());
+    document.querySelector(".main__button").textContent = "Play again?";
+    document.querySelector(".main__button").classList.remove("hide__display");
+}
 
 
 
@@ -84,7 +90,8 @@ function displayResults() {
 
 function generateImages() {
     Array.from(document.querySelectorAll(".main__image"))
-         .map((image)=> {
+         .map((image,index)=> {
+            document.querySelector(`.main__player${index+1}`).textContent = `Player ${index+1}`;
             image.setAttribute("src",`./images/dice${Math.floor((Math.random() * 6) + 1)}.png`)
          });
 }
@@ -115,7 +122,7 @@ function result(array) {
     return winner === loser ? document.querySelector(".main__winner").textContent = "Its a draw! No one wins" : updateWinnerScore(winner);
 }
 
-// used to update the winner score
+// updates Score Board
 
 function updateWinnerScore(winner) {
         document.querySelector(".main__winner").textContent = `Player ${winner +1} is the winner!`;
@@ -142,39 +149,42 @@ function resetContent() {
 
 
 
-// generate element 
 
-function createElement(element,text,...classes) {
+// maybe in future usage
 
-    // adds the optional class value to the element
+// // generate element 
 
-    const result = document.createElement(element)
-    result.textContent = text;
-    // result.classList.add(...classes);
-    return result;
-}
+// function createElement(element,text,...classes) {
 
+//     // adds the optional class value to the element
 
-
-
-// current header content
-
-function createHeaderContent() {
-    const currentContent = document.querySelector(".header");
-
-    const ScoreBoard =    createElement("h1","Current Score:","header__score");
-    const Player1Score =  createElement("h1",`Player 1: ${playerResult.player1}`,"header__score  ");
-    const Player2Score =  createElement("h1",` Player 2: ${playerResult.player2}`,"header__score ");
-    appendToParentElement(currentContent,ScoreBoard,Player1Score,Player2Score);
-}
+//     const result = document.createElement(element)
+//     result.textContent = text;
+//     // result.classList.add(...classes);
+//     return result;
+// }
 
 
 
 
-// append child elements to parent element
+// // current header content
 
-function appendToParentElement(parent,...children){
-    for(let iteratable of children){
-        parent.appendChild(iteratable);
-    }
-}
+// function createHeaderContent() {
+//     const currentContent = document.querySelector(".header");
+
+//     const ScoreBoard =    createElement("h1","Current Score:","header__score");
+//     const Player1Score =  createElement("h1",`Player 1: ${playerResult.player1}`,"header__score  ");
+//     const Player2Score =  createElement("h1",` Player 2: ${playerResult.player2}`,"header__score ");
+//     appendToParentElement(currentContent,ScoreBoard,Player1Score,Player2Score);
+// }
+
+
+
+
+// // append child elements to parent element
+
+// function appendToParentElement(parent,...children){
+//     for(let iteratable of children){
+//         parent.appendChild(iteratable);
+//     }
+// }
