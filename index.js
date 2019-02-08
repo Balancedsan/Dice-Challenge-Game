@@ -5,109 +5,176 @@ const playerResult = {
     player2: 0
 }
 
-// Dice Values
+ // button the header button
 
-document.querySelector(".header__button").addEventListener("click",()=>{
-    changeDisplay();
+document.querySelector(".header__button").addEventListener("click", () => {
+    renderHeader();
     displayResults();
 })
+
+
+// button for the main button
 
 document.querySelector(".main__button").addEventListener("click",()=> {
     resetContent();
+    document.querySelector(".main__button").classList.add("hide__display");
     displayResults();
 })
 
-// changes the display of the html once the start button is clicked
 
-function changeDisplay(){
-    // document.querySelector(".header").classList.add("header__after");
-    const top =  document.querySelector(".header")
-    top.textContent="";
-    createScoreBoard(top);
-    document.querySelector(".main").classList.add("main__after");   
-}
-
-function resetContent() {
-    Array.from(document.querySelector(".main").children)
-          .map((element) =>{
-            element.textContent =""
-            element.removeAttribute("src")
-          });
-}
-
-function countDownTimer(value,element){
-    let promise = new Promise((resolve,reject)=>{
-       const timer =  setInterval(()=> {
-        element.textContent = value - 1;
-        value -=1;        
-        if(value <=0){
-          clearInterval(timer);
-          resolve(element);
-        }
-      },1000)  
-     })
-    
-     return promise;
-}
-
-// creates the scoreboard for the dice game
-
-function createScoreBoard(header) {
-
-    const board = document.createElement("h1");
-    board.textContent = "Score :";
-    const result = document.createElement("h1");
-    result.classList.add("header__result");
-    result.textContent = `Player 1  ${playerResult.player1} :
-                          Player 2  ${playerResult.player2};`
-    header.appendChild(board);
-    header.appendChild(result);
-
+function renderHeader(){
+    const currentContent = document.querySelector(".header");
+    const replaceWith =   `<h1>Current Score: <br> Player 1: ${playerResult.player1}  <br> Player 2: ${playerResult.player2}</h1>`;
+    changeElementContent(currentContent ,replaceWith);
 }
 
 
+
+// changes the element content
+
+function changeElementContent(element, content) {
+    saferInnerHTML(element, content);
+}
+
+// countdown timer used to display before running the content
+
+function countDownTimer(value, element) {
+    const promise = new Promise((resolve, reject) => {
+        const timer = setInterval(() => {
+            element.textContent = value - 1;
+            value -= 1;
+            if (value <= 0) {
+                clearInterval(timer);
+                resolve(element);
+            }
+        }, 1000)
+    })
+
+    return promise;
+}
+
+
+
+function toggleDisplay(element) {
+    element.toggle("hide__display");
+}
+
+// display the results
 
 function displayResults() {
 
-    countDownTimer(4,document.querySelector(".main__text"))
-    .then((element)=>element.textContent="")
-    .then(()=> {
-             const diceValues = [];
+    countDownTimer(4, document.querySelector(".main__text"))
+        .then((element) => { element.textContent = "" })
+        .then(()=> generateImages())
+        .then(()=> getDiceResult())
+        .then((array)=> result(array))
+        .then(() =>{
+            document.querySelector(".main__button").textContent = "play again?";
+            document.querySelector(".main__button").classList.remove("hide__display");
+        } )
 
-             Array.from(document.querySelectorAll(".main__image"))
-              .map((image)=>{
-                const random = Math.floor((Math.random() * 6) + 1);
-                image.setAttribute("src",`./images/dice${random}.png`)
-                diceValues.push(random);
-             });
-              return diceValues;
-    }).then((array) => {
-        const winner = array.indexOf(Math.max(...array));
-        const loser = array.indexOf(Math.min(...array));
-        result(winner,loser);
-        // document.querySelector(".main__winner").textContent = checkDraw(winner,loser);
-    }).then(()=>{
-        const replay =  document.querySelector(".main__button");
-        replay.textContent =" Play Again? ";
-        return replay;
-    })
 }
 
 
-function result (winner,loser){
 
-    if(winner === loser) {
-        document.querySelector(".main__winner").textContent = "Its a draw!";
-    }else {
+
+
+
+// generate random dice result from 1-6
+
+function generateImages() {
+    Array.from(document.querySelectorAll(".main__image"))
+         .map((image)=> {
+            image.setAttribute("src",`./images/dice${Math.floor((Math.random() * 6) + 1)}.png`)
+         });
+}
+
+
+
+
+// return the dice number from the image src tag
+
+function getDiceResult() {
+    const diceValues = [];
+    Array.from(document.querySelectorAll(".main__image"))
+    .map((image)=> {
+                const valueToExtract = image.getAttribute("src");
+                diceValues.push(parseInt(...valueToExtract.match(/\d+/g)));
+
+    });
+
+    return diceValues;
+}
+
+
+// display result of the winner
+
+function result(array) {
+    const winner = array.indexOf(Math.max(...array));
+    const loser = array.indexOf(Math.min(...array));
+    return winner === loser ? document.querySelector(".main__winner").textContent = "Its a draw! No one wins" : updateWinnerScore(winner);
+}
+
+// used to update the winner score
+
+function updateWinnerScore(winner) {
         document.querySelector(".main__winner").textContent = `Player ${winner +1} is the winner!`;
         playerResult[`player${winner+1}`]++;
-    
-        const update =  document.querySelector(".header__result");
-        update.textContent = `Player 1 ${playerResult.player1} : 
-                              Player 2 ${playerResult.player2};`
-    }
-
-    // return winner === loser ? "Its a draw!" : `Player ${winner +1} is the winner!`;
+        renderHeader();
 }
 
 
+// resets the content 
+
+function resetContent() {
+
+    Array.from(document.querySelectorAll(".main__content"))
+                       .map((element)=> {
+                           element.textContent = ""
+                       });
+     Array.from(document.querySelectorAll(".main__image"))
+                         .map((element)=> {
+                             element.removeAttribute("src")
+                         });
+
+}   
+
+
+
+
+// generate element 
+
+function createElement(element,text,...classes) {
+
+    // adds the optional class value to the element
+
+    const result = document.createElement(element)
+    result.textContent = text;
+    // result.classList.add(...classes);
+    return result;
+}
+
+
+
+
+// current header content
+
+function createHeaderContent() {
+    const currentContent = document.querySelector(".header");
+
+    const ScoreBoard =    createElement("h1","Current Score:","header__score");
+    const Player1Score =  createElement("h1",`Player 1: ${playerResult.player1}`,"header__score  ");
+    const Player2Score =  createElement("h1",` Player 2: ${playerResult.player2}`,"header__score ");
+    appendToParentElement(currentContent,ScoreBoard,Player1Score,Player2Score);
+}
+
+
+
+
+// append child elements to parent element
+
+function appendToParentElement(parent,...children){
+    for(let iteratable of children){
+        parent.appendChild(iteratable);
+    }
+}

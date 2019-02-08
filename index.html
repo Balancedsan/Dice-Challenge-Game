@@ -9,25 +9,27 @@
   <body class="body">
 
     <header class="header">
-      <h1 class="header__title">2 Players Dice Roller Game</h1>
+      <h1 class="header__title">2 Player Dice betting Game</h1>
       <h2 class="header__title header__title--instruct">Press The Start Button To Begin</h1>
       <button class="header__button">Start</button>
     </header>
 
 
     <main class="main">
-      <h1 class="main__text"></h1>
-      <img class ="main__image">
-      <img class ="main__image">
-      <h1 class="main__winner"></h1>
-      <button class="main__button"></button>
+      <h1 class="main__text main__content"></h1>
+      <div class="main__diceimg">
+          <img class ="main__image">
+          <img class ="main__image">
+      </div>
+      <h1 class="main__winner  main__content"></h1>
+      <button class="main__button  main__content hide__display"></button>
     </main>
 
   </body>
 
   <!--Safer innerHtml-->
 
-  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/saferInnerHTML@1.0.0/dist/saferInnerHTML.polyfills.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/saferInnerHTML@1/dist/saferInnerHTML.polyfills.min.js"></script>
 
   <script src="index.js"></script>
 </html>

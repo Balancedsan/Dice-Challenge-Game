@@ -1,7 +1,5 @@
 * {
   box-sizing: border-box;
-  padding:0;
-  margin:0;
 }
 
 html {
@@ -48,10 +46,6 @@ body {
 
 
 .main{
-  display:none;
-}
-
-.main__after {
   display:flex;
   flex-direction: column;
   justify-content: center;
@@ -60,7 +54,32 @@ body {
   height: 100%;
 }
 
+.main__diceimg{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
+.main__image {
+  display: inline-block;
+  margin: 25px 10px;
+}
+/* .main__after {
+
+} */
+
+@media(min-width:768px) {
+  .main__diceimg{
+    flex-direction: row;
+  }
+  
+}
+
+/* Dom Styling */
+
+.hide__display {
+  display:none
+}
 
 /* .button__after {
   margin-top:2rem;
